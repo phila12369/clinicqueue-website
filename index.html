@@ -1,90 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <!-- Required meta tags -->
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="ClinicQueue: Instantly book clinic appointments via WhatsApp. Designed for African clinics to eliminate waiting-room chaos." />
-  <title>ClinicQueue | WhatsApp Appointment Booking</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClinicQueue — WhatsApp Appointment Booking for Clinics</title>
+  <meta name="description" content="ClinicQueue helps healthcare practices accept appointments over WhatsApp — faster booking, fewer no‑shows, and happier patients." />
+  <meta name="theme-color" content="#0ea5e9" />
+  <meta property="og:title" content="ClinicQueue — WhatsApp Appointment Booking for Clinics" />
+  <meta property="og:description" content="Accept appointments over WhatsApp. Reminders, confirmations, and a clean experience for your patients." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://clinicqueue.pro" />
 
-  <!-- Google Font -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --card: #0f172a;
+      --text: #e5edf7;
+      --muted: #b6c3d4;
+      --brand: #0ea5e9; /* sky-500 */
+      --brand-2: #22d3ee; /* cyan-400 */
+      --accent: #34d399; /* emerald-400 */
+      --ring: rgba(14,165,233,.35);
+      --shadow: 0 10px 30px rgba(2,8,23,.35);
+      --radius: 18px;
+      --maxw: 1120px;
+    }
 
-  <!-- Favicon -->
-  <link rel="icon" href="/favicon.ico" />
+    * { box-sizing: border-box; }
+    html,body { height: 100%; }
+    body {
+      margin: 0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+      color: var(--text);
+      background: radial-gradient(1200px 600px at 80% -10%, rgba(34,211,238,.18), transparent 50%),
+                  radial-gradient(900px 600px at -10% -10%, rgba(14,165,233,.18), transparent 55%),
+                  var(--bg);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
 
-  <!-- Your refined CSS -->
-  <link rel="stylesheet" href="style.css" />
+    a { color: inherit; text-decoration: none; }
+    .container { max-width: var(--maxw); margin: 0 auto; padding: 0 20px; }
+
+    /* Header */
+    header.site {
+      position: sticky; top: 0; z-index: 50;
+      backdrop-filter: saturate(140%) blur(10px);
+      background: linear-gradient(180deg, rgba(11,16,32,.85), rgba(11,16,32,.35));
+      border-bottom: 1px solid rgba(255,255,255,.06);
+    }
+    .nav { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; }
+    .logo { display: inline-flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: .3px; }
+    .logo svg { width: 28px; height: 28px; }
+    .nav a { color: var(--muted); font-weight: 600; margin-left: 20px; }
+    .nav a:hover { color: var(--text); }
+
+    /* Buttons */
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 14px 18px; border-radius: 999px; font-weight: 800; letter-spacing: .3px; box-shadow: var(--shadow); transition: transform .06s ease, box-shadow .2s ease, background .2s ease; border: 1px solid rgba(255,255,255,.08); }
+    .btn:hover { transform: translateY(-1px); box-shadow: 0 14px 40px rgba(14,165,233,.25); }
+    .btn:focus-visible { outline: 3px solid var(--ring); outline-offset: 2px; }
+    .btn-brand { background: linear-gradient(135deg, var(--brand), var(--brand-2)); color: #00131a; }
+    .btn-ghost { background: rgba(255,255,255,.06); color: var(--text); }
+
+    /* Hero */
+    .hero { padding: 80px 0 40px; }
+    .hero-grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 32px; align-items: center; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; background: rgba(34,211,238,.12); color: #aef3ff; border: 1px solid rgba(34,211,238,.35); font-weight: 700; font-size: 12px; letter-spacing: .3px; }
+    h1 { font-size: clamp(32px, 5vw, 56px); line-height: 1.05; margin: 14px 0 16px; }
+    .lead { color: var(--muted); font-size: clamp(16px, 2.2vw, 20px); max-width: 52ch; }
+    .cta-row { display: flex; gap: 12px; margin-top: 22px; flex-wrap: wrap; }
+
+    .mock { background: linear-gradient(180deg, #11182e, #0d142a); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow); }
+    .phone { position: relative; background: #0a1227; border-radius: 24px; padding: 16px; border: 1px solid rgba(255,255,255,.06); height: 500px; overflow: hidden; }
+    .bubble { max-width: 78%; padding: 10px 14px; border-radius: 16px; margin: 10px 0; font-size: 14px; }
+    .bubble.user { margin-left: auto; background: #1f2937; color: #e5edf7; }
+    .bubble.bot { background: #0ea5e9; color: #002236; font-weight: 700; }
+
+    /* Sections */
+    section { padding: 64px 0; }
+    .grid { display: grid; gap: 16px; }
+    .grid.features { grid-template-columns: repeat(3, minmax(0,1fr)); }
+    @media (max-width: 920px) { .hero-grid { grid-template-columns: 1fr; } .grid.features { grid-template-columns: 1fr; } }
+
+    .card { background: var(--card); border: 1px solid rgba(255,255,255,.06); border-radius: var(--radius); padding: 22px; box-shadow: var(--shadow); }
+    .card h3 { margin: 8px 0 6px; }
+    .muted { color: var(--muted); }
+
+    .steps { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+    /* Footer */
+    footer { padding: 42px 0; border-top: 1px solid rgba(255,255,255,.06); color: var(--muted); }
+    .foot { display: grid; grid-template-columns: 1.3fr 1fr 1fr; gap: 18px; }
+    @media (max-width: 920px) { .foot { grid-template-columns: 1fr; gap: 28px; } }
+    .small { font-size: 12px; color: var(--muted); }
+
+    /* Utility */
+    .kicker { color: #a2e9ff; font-weight: 800; letter-spacing: .4px; text-transform: uppercase; font-size: 12px; }
+    .check { color: var(--accent); margin-right: 8px; }
+    .sep { height: 1px; background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,.08), rgba(255,255,255,0)); margin: 28px 0; }
+
+    /* Floating WhatsApp */
+    .fab { position: fixed; right: 18px; bottom: 18px; background: #25D366; color: #002a10; border-radius: 999px; padding: 14px 18px; box-shadow: var(--shadow); display: inline-flex; align-items: center; gap: 10px; font-weight: 800; border: 1px solid rgba(0,0,0,.1); }
+    .fab svg { width: 18px; height: 18px; }
+  </style>
 </head>
 <body>
-  <header class="site-header" role="banner">
-    <div class="container">
-      <h1 class="site-title">ClinicQueue</h1>
-      <p class="site-tagline">Book clinic appointments instantly via WhatsApp.</p>
-      <a
-        href="https://wa.me/YOURNUMBER"
-        class="cta"
-        target="_blank"
-        rel="noopener"
-        aria-label="Start booking via WhatsApp"
-      >
-        Start Booking
+  <!--
+    IMPORTANT: Set your WhatsApp number below (international format, numbers only), e.g. 27712345678
+    The site includes a graceful fallback to email if the number isn't set yet.
+  -->
+  <script>
+    const WHATSAPP_NUMBER = "27786131310"; // ← set to your full international number (no plus sign)
+    const WHATSAPP_TEXT = encodeURIComponent("Hi ClinicQueue — I'd like to book an appointment.");
+    const waUrl = WHATSAPP_NUMBER
+      ? `https://wa.me/${WHATSAPP_NUMBER}?text=${WHATSAPP_TEXT}`
+      : null;
+    window.addEventListener('DOMContentLoaded', () => {
+      const waLinks = document.querySelectorAll('[data-wa-link]');
+      waLinks.forEach(a => {
+        if (waUrl) {
+          a.href = waUrl; a.target = '_blank'; a.rel = 'noopener';
+        } else {
+          a.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('WhatsApp chat not configured yet. Email us at clinicqueue@clinicqueue.pro and we\'ll respond ASAP.');
+          });
+        }
+      });
+    });
+  </script>
+
+  <header class="site">
+    <div class="container nav">
+      <a href="#top" class="logo" aria-label="ClinicQueue home">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.5c-5.24 0-9.5 4.26-9.5 9.5s4.26 9.5 9.5 9.5 9.5-4.26 9.5-9.5S17.24 2.5 12 2.5Zm0 2a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm3.6 4.9-4.7 6.2-2.1-2.3a1 1 0 0 0-1.5 1.3l2.9 3.2a1.5 1.5 0 0 0 2.3-.1l5.5-7.2a1 1 0 1 0-1.4-1.2Z" fill="currentColor"/></svg>
+        <span>ClinicQueue</span>
       </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how">How it works</a>
+        <a href="#contact">Contact</a>
+      </nav>
     </div>
   </header>
 
-  <main role="main">
-    <!-- Features -->
-    <section class="features container" aria-labelledby="features-heading">
-      <h2 id="features-heading">Why ClinicQueue?</h2>
-      <ul class="feature-list">
-        <li>
-          <span class="feature-icon" aria-hidden="true">✅</span>
-          <span class="feature-text">No waiting-room chaos</span>
-        </li>
-        <li>
-          <span class="feature-icon" aria-hidden="true">🕒</span>
-          <span class="feature-text">24/7 appointment requests</span>
-        </li>
-        <li>
-          <span class="feature-icon" aria-hidden="true">🌍</span>
-          <span class="feature-text">Tailored for African clinics</span>
-        </li>
-      </ul>
-    </section>
-
-    <!-- How It Works -->
-    <section class="how-it-works container" aria-labelledby="how-heading">
-      <h2 id="how-heading">How It Works</h2>
-      <ol class="steps-list">
-        <li>
-          <h3>1. Click “Start Booking”</h3>
-          <p>You’ll open a WhatsApp chat with your clinic.</p>
-        </li>
-        <li>
-          <h3>2. Share Your Details</h3>
-          <p>Send your preferred date, time & reason for visit.</p>
-        </li>
-        <li>
-          <h3>3. Confirm & Remind</h3>
-          <p>Your appointment is booked and you get SMS reminders.</p>
-        </li>
-      </ol>
-    </section>
+  <main id="top" class="container hero">
+    <div class="hero-grid">
+      <div>
+        <span class="badge">WhatsApp-first booking • Built for clinics</span>
+        <h1>Turn WhatsApp into your clinic’s fastest booking desk.</h1>
+        <p class="lead">ClinicQueue lets patients book in seconds, right from WhatsApp — with confirmations, reminders, and fewer no‑shows. No apps to install. No training needed.</p>
+        <div class="cta-row">
+          <a class="btn btn-brand" data-wa-link href="#whatsapp">Chat on WhatsApp</a>
+          <a class="btn btn-ghost" href="mailto:clinicqueue@clinicqueue.pro">Email us</a>
+        </div>
+        <div class="small" style="margin-top:10px">Prefer email? <a href="mailto:clinicqueue@clinicqueue.pro" style="text-decoration:underline;">clinicqueue@clinicqueue.pro</a></div>
+      </div>
+      <div class="mock">
+        <div class="phone" aria-label="Demo phone">
+          <div class="bubble bot">Hi! 👋 This is ClinicQueue. Ready to book an appointment?</div>
+          <div class="bubble user">Yes — tomorrow morning please.</div>
+          <div class="bubble bot">Great. What’s your full name?</div>
+          <div class="bubble user">Thabo Mokoena</div>
+          <div class="bubble bot">Thanks, Thabo. What time works best?</div>
+          <div class="bubble user">09:30</div>
+          <div class="bubble bot">All set ✅ You’ll receive a confirmation shortly.</div>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <footer class="site-footer" role="contentinfo">
+  <section id="features">
     <div class="container">
-      <p>&copy; 2025 ClinicQueue. All rights reserved.</p>
-      <p>
-        <a href="mailto:support@clinicqueue.com">support@clinicqueue.com</a>
-      </p>
-      <p>
-        <a href="/privacy-policy.html">Privacy Policy</a> | 
-        <a href="/terms.html">Terms of Service</a>
-      </p>
+      <div class="grid features">
+        <article class="card">
+          <h3>Instant WhatsApp booking</h3>
+          <p class="muted">Patients book by sending a message — no app downloads, no portals.</p>
+        </article>
+        <article class="card">
+          <h3>Smart reminders</h3>
+          <p class="muted">Automated confirmations and reminders reduce no‑shows and keep your day on track.</p>
+        </article>
+        <article class="card">
+          <h3>Works with your tools</h3>
+          <p class="muted">Push appointments to Google Calendar or Sheets. Simple and reliable.</p>
+        </article>
+      </div>
+      <div class="sep"></div>
+      <div id="how" class="grid steps">
+        <div class="card">
+          <span class="kicker">Step 1</span>
+          <h3>Patients message your WhatsApp</h3>
+          <p class="muted">They say “Hi” or tap your link. We greet them and collect the essentials.</p>
+        </div>
+        <div class="card">
+          <span class="kicker">Step 2</span>
+          <h3>We confirm & schedule</h3>
+          <p class="muted">Appointment details are confirmed instantly, with a follow‑up reminder.</p>
+        </div>
+        <div class="card">
+          <span class="kicker">Step 3</span>
+          <h3>You focus on care</h3>
+          <p class="muted">Your team spends less time on phones and more time with patients.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contact">
+    <div class="container">
+      <div class="grid" style="grid-template-columns: 1.2fr 1fr; gap: 24px; align-items: start;">
+        <div class="card">
+          <h3>Talk to us</h3>
+          <p class="muted">Questions? Demos? Pricing? We’ll respond quickly.</p>
+          <p class="muted"><span class="check">✔</span>WhatsApp: <a data-wa-link href="#whatsapp" style="text-decoration:underline;">Start chat</a></p>
+          <p class="muted"><span class="check">✔</span>Email: <a href="mailto:clinicqueue@clinicqueue.pro" style="text-decoration:underline;">clinicqueue@clinicqueue.pro</a></p>
+        </div>
+        <div class="card">
+          <h3>What you get</h3>
+          <ul class="muted" style="margin:0; padding-left:18px; line-height:1.8;">
+            <li>WhatsApp-first booking experience</li>
+            <li>Automated confirmations & reminders</li>
+            <li>Simple integration with Google tools</li>
+            <li>Fast setup and responsive support</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container foot">
+      <div>
+        <div class="logo" style="margin-bottom:10px">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 2.5c-5.24 0-9.5 4.26-9.5 9.5s4.26 9.5 9.5 9.5 9.5-4.26 9.5-9.5S17.24 2.5 12 2.5Zm0 2a7.5 7.5 0 1 1 0 15 7.5 7.5 0 0 1 0-15Zm3.6 4.9-4.7 6.2-2.1-2.3a1 1 0 0 0-1.5 1.3l2.9 3.2a1.5 1.5 0 0 0 2.3-.1l5.5-7.2a1 1 0 1 0-1.4-1.2Z" fill="currentColor"/></svg>
+          <strong>ClinicQueue</strong>
+        </div>
+        <p class="small">© <span id="year"></span> ClinicQueue. All rights reserved.</p>
+        <p class="small">Built for fast, reliable patient bookings over WhatsApp.</p>
+      </div>
+      <div>
+        <p class="small"><strong>Contact</strong></p>
+        <p class="small"><a data-wa-link href="#whatsapp">WhatsApp chat</a></p>
+        <p class="small"><a href="mailto:clinicqueue@clinicqueue.pro">clinicqueue@clinicqueue.pro</a></p>
+      </div>
+      <div>
+        <p class="small"><strong>Legal</strong></p>
+        <p class="small"><a href="#">Terms</a> · <a href="#">Privacy</a></p>
+      </div>
     </div>
   </footer>
+
+  <a class="fab" data-wa-link href="#whatsapp" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M19.05 4.94A9.96 9.96 0 0 0 12.02 2C6.51 2 2 6.5 2 12.02c0 1.77.46 3.5 1.34 5.03L2 22l5.07-1.3a9.96 9.96 0 0 0 4.95 1.3h.01c5.5 0 10-4.51 10-10.02 0-2.67-1.04-5.18-2.98-7.07ZM12.03 20.4h-.01a8.41 8.41 0 0 1-4.28-1.17l-.31-.18-3.01.77.8-2.94-.2-.31A8.37 8.37 0 0 1 3.6 12C3.6 7.3 7.31 3.6 12.02 3.6c2.25 0 4.37.88 5.96 2.47A8.35 8.35 0 0 1 20.42 12c0 4.7-3.72 8.4-8.39 8.4Zm4.74-6.31c-.26-.13-1.56-.77-1.8-.85-.24-.09-.41-.13-.59.13-.17.26-.68.84-.83 1.02-.15.17-.3.2-.56.07-.26-.13-1.11-.41-2.11-1.31-.78-.69-1.31-1.53-1.46-1.79-.15-.26-.02-.39.11-.52.11-.11.26-.3.39-.45.13-.15.17-.26.26-.43.09-.17.04-.32-.02-.45-.06-.13-.59-1.42-.81-1.95-.21-.51-.42-.44-.59-.44l-.5-.01c-.17 0-.45.06-.68.32-.24.26-.89.86-.89 2.1 0 1.24.91 2.44 1.04 2.61.13.17 1.78 2.71 4.31 3.8.6.26 1.07.42 1.43.54.6.19 1.15.16 1.59.1.49-.07 1.56-.64 1.78-1.26.22-.62.22-1.15.15-1.26-.06-.11-.24-.17-.5-.3Z" fill="currentColor"/></svg>
+    WhatsApp us
+  </a>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Organization Schema for richer search results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "ClinicQueue",
+    "url": "https://clinicqueue.pro",
+    "logo": "https://clinicqueue.pro/favicon.ico",
+    "email": "clinicqueue@clinicqueue.pro",
+    "sameAs": []
+  }
+  </script>
 </body>
 </html>
