@@ -1,0 +1,23 @@
+{
+  "name": "clinicqueue-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "testBooking.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/phila12369/clinicqueue-website.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/phila12369/clinicqueue-website/issues"
+  },
+  "homepage": "https://github.com/phila12369/clinicqueue-website#readme",
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  }
+}

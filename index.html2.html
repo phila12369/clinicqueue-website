@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>ClinicQueue Booking</title>
+  <style>
+    body { font-family: Arial, sans-serif; max-width: 400px; margin: 20px auto; padding: 0 10px; }
+    h2 { text-align: center; color: #333; }
+    input { display: block; width: 100%; margin: 10px 0; padding: 10px; border: 1px solid #ccc; border-radius: 5px; }
+    button { width: 100%; padding: 10px; background: #25D366; color: white; border: none; border-radius: 5px; cursor: pointer; font-size: 16px; }
+    button:hover { background: #20b058; }
+  </style>
+</head>
+<body>
+  <h2>Book Your Appointment</h2>
+  <form id="bookingForm">
+    <input type="text" name="name" placeholder="Your Name" required>
+    <input type="tel" name="phone" placeholder="Phone Number (e.g., 27786131310)" pattern="[0-9]{10,12}" required>
+    <input type="text" name="reason" placeholder="Reason for Visit" required>
+    <input type="date" name="preferred_day" required>
+    <input type="text" name="preferred_window" placeholder="Preferred Time (e.g., 10:00-12:00)" required>
+    <button type="button" onclick="submitForm()">Book Now</button>
+  </form>
+  <script>
+    function submitForm() {
+      const form = document.getElementById('bookingForm');
+      const data = {
+        name: form.name.value,
+        phone: form.phone.value,
+        reason: form.reason.value,
+        preferred_day: form.preferred_day.value,
+        preferred_window: form.preferred_window.value
+      };
+      fetch('https://script.google.com/macros/s/AKfycbxhqYVdH4uiy4loYYARePMGvdQr0xVoePjLHzc4wlAGx81sJQeTtAB_v-W-deoBxwok/exec', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      }).then(response => response.json())
+        .then(result => {
+          if (result.ok) {
+            alert('Booking submitted successfully! You\'ll get confirmation soon. Timestamp: ' + result.timestamp);
+            form.reset();
+          } else {
+            alert('Error submitting booking. Try again.');
+          }
+        }).catch(error => alert('Error: ' + error));
+    }
+  </script>
+</body>
+</html>
